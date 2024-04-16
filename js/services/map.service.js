@@ -90,7 +90,7 @@ function getUserPosition() {
     })
 }
 
-async function _connectGoogleApi() {
+function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
 
     const elGoogleApi = document.createElement('script')
