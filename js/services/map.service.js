@@ -98,6 +98,8 @@ function _connectGoogleApi() {
     elGoogleApi.async = true
     document.body.append(elGoogleApi)
 
+    console.log(elGoogleApi)
+
     return new Promise((resolve, reject) => {
         elGoogleApi.onload = resolve
         elGoogleApi.onerror = () => reject('GoogleMaps script failed to load')
