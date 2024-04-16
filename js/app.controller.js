@@ -4,6 +4,7 @@ import { mapService } from './services/map.service.js'
 
 window.onload = onInit
 
+var gUserPos = { lat: 0, lng: 0 }
 // To make things easier in this project structure 
 // functions that are called from DOM are defined on a global app object
 window.app = {
@@ -32,11 +33,15 @@ function onInit() {
         })
 }
 
+
+
 function renderLocs(locs) {
-    console.log(locs)
     const selectedLocId = getLocIdFromQueryParams()
     // console.log('locs:', locs)
     var strHTML = locs.map(loc => {
+        const { lat, lng } = loc.geo
+        const locGeo = { lat, lng }
+
         const className = (loc.id === selectedLocId) ? 'active' : ''
         return `
         <li class="loc ${className}" data-id="${loc.id}">
@@ -50,6 +55,11 @@ function renderLocs(locs) {
                 ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}`
                 : ''}
             </p>
+
+            <p class="muted">
+                Distance: <span>${utilService.getDistance(gUserPos, locGeo, 'K')}</span> KM
+            </p>
+
             <div class="loc-btns">     
                <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
                <button title="Edit" onclick="app.onUpdateLoc('${loc.id}')">✏️</button>
@@ -136,6 +146,13 @@ function onPanToUserPos() {
             unDisplayLoc()
             loadAndRenderLocs()
             flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
+
+            gUserPos = {
+                lat: latLng.lat,
+                lng: latLng.lng,
+            }
+            console.log(gUserPos)
+
         })
         .catch(err => {
             console.error('OOPs:', err)
