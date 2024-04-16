@@ -38,6 +38,7 @@ function query() {
         .then(locs => {
             if (gFilterBy.txt) {
                 const regex = new RegExp(gFilterBy.txt, 'i')
+                console.log(locs)
                 locs = locs.filter(loc => regex.test(loc.name) || regex.test(loc.geo.address))
             }
             if (gFilterBy.minRate) {
