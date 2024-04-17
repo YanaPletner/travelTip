@@ -111,14 +111,11 @@ function getLocCountBylastUpdatedMap() {
             const locCountByLastUpdatedMap = locs.reduce((map, loc) => {
                 const now = new Date()
                 const secondsPast = Math.round((now - loc.updatedAt) / 1000)
-                const millSecInDay = 86_400
-                // console.log(loc)
-                // console.log(millSecInDay)
-                // console.log(secondsPast)
-                // console.log(Date.now())
-                if (secondsPast < millSecInDay) map.today++
-                else if (secondsPast < 0) map.never++
-                else map.past++
+                const secInDay = 86_400
+
+                if (secondsPast < secInDay) map.today++
+                else if (secondsPast > secInDay) map.never++
+                else map.never++
                 return map
             }, { today: 0, past: 0, never: 0 })
             locCountByLastUpdatedMap.total = locs.length
