@@ -109,13 +109,9 @@ function getLocCountBylastUpdatedMap() {
     return storageService.query(DB_KEY)
         .then(locs => {
             const locCountByLastUpdatedMap = locs.reduce((map, loc) => {
-                const now = new Date()
-                const secondsPast = Math.round((now - loc.updatedAt) / 1000)
-                const secInDay = 86_400
-
-                if (secondsPast < secInDay) map.today++
-                else if (secondsPast > secInDay) map.never++
-                else map.never++
+                if (loc.updatedAt > loc.createdAt) map.today++
+                else if (loc.updatedAt > loc.createdAt) map.past++
+                else if (loc.updatedAt === loc.createdAt) map.never++
                 return map
             }, { today: 0, past: 0, never: 0 })
             locCountByLastUpdatedMap.total = locs.length

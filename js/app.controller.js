@@ -326,6 +326,7 @@ function handleStats(stats, selector) {
 
 function cleanStats(stats) {
     const cleanedStats = Object.keys(stats).reduce((acc, label) => {
+
         if (label !== 'total' && stats[label]) {
             acc.push(label)
         }
